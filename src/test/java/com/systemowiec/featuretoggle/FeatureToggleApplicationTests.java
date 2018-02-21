@@ -1,4 +1,4 @@
-package com.worldfirst.featuretoggle;
+package com.systemowiec.featuretoggle;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
-package com.worldfirst.featuretoggle.http;
+package com.systemowiec.featuretoggle.http;
 
-import com.worldfirst.featuretoggle.feature.Feature;
-import com.worldfirst.featuretoggle.feature.FeatureRepository;
+import com.systemowiec.featuretoggle.feature.Feature;
+import com.systemowiec.featuretoggle.feature.FeatureRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

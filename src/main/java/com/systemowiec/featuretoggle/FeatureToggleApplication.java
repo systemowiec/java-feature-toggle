@@ -1,4 +1,4 @@
-package com.worldfirst.featuretoggle;
+package com.systemowiec.featuretoggle;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

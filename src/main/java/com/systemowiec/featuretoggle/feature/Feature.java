@@ -1,4 +1,4 @@
-package com.worldfirst.featuretoggle.feature;
+package com.systemowiec.featuretoggle.feature;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

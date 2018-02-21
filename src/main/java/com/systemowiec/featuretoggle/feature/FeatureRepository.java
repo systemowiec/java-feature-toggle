@@ -1,4 +1,4 @@
-package com.worldfirst.featuretoggle.feature;
+package com.systemowiec.featuretoggle.feature;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
