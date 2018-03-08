@@ -1,5 +1,6 @@
 package com.systemowiec.featuretoggle.feature;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,6 +13,8 @@ public class Feature {
     @Id
     private String id;
     private String description;
+
+    @Column(name = "creation_time", columnDefinition = "datetime") // set the name for the column and database type
     private LocalDateTime creationTime = LocalDateTime.now();
 
     public Feature() {
@@ -26,19 +29,19 @@ public class Feature {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public void updateDescription(String newDescription) {
+        description = newDescription;
+    }
+
+    public void updateDescription(char[] newDescription) {
+        description = String.valueOf(newDescription);
     }
 }
