@@ -2,10 +2,9 @@ package com.systemowiec.featuretoggle.http;
 
 import com.systemowiec.featuretoggle.feature.Feature;
 import com.systemowiec.featuretoggle.feature.FeatureRepository;
-import com.systemowiec.featuretoggle.http.contract.CreateFeatureRequest;
-import com.systemowiec.featuretoggle.http.contract.EntityNotFoundException;
-import com.systemowiec.featuretoggle.http.contract.ErrorResponse;
-import com.systemowiec.featuretoggle.http.contract.UpdateFeatureRequest;
+import com.systemowiec.featuretoggle.feature.exception.FeatureDeletedException;
+import com.systemowiec.featuretoggle.http.contract.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +55,11 @@ public class FeatureController {
         Feature feature = featureRepository.findOne(featureId);
 
         if (feature != null) {
-            feature.updateDescription(request.getDescription());
+            try {
+                feature.updateDescription(request.getDescription());
+            } catch (FeatureDeletedException e) {
+                throw new EntityNotFoundException();
+            }
             featureRepository.save(feature);
 
             return feature;
@@ -64,6 +67,29 @@ public class FeatureController {
 
         throw new EntityNotFoundException();
     }
+
+    @RequestMapping(
+            path = "/api/features/{featureId}",
+            method = RequestMethod.DELETE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFeature(@PathVariable("featureId") String featureId) {
+
+        Feature feature = featureRepository.findOne(featureId);
+
+        if (feature == null) {
+            throw new EntityNotFoundException();
+        }
+
+        try {
+            feature.delete();
+        } catch (FeatureDeletedException e) {
+            throw new UnprocessableEntityException();
+        }
+
+        featureRepository.save(feature);
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class) // .class has type Class<?>
@@ -75,5 +101,11 @@ public class FeatureController {
     @ExceptionHandler(EntityNotFoundException.class) // .class has type Class<?>
     public ErrorResponse unicornsAndBunnies() {
         return new ErrorResponse("Object not found");
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ErrorResponse unprocessableEntity() {
+        return new ErrorResponse("Change in entity could not be applied");
     }
 }
